@@ -130,8 +130,67 @@ app.get('/articles' , async (req , res)=>{
 // get By Id
 app.get('/articles/:articleId' , async (req , res)=>{
     const id = req.params.articleId
-    const myArticle = await Article.findById(id);
-    res.json(myArticle);
+    let  myArticle =  "";
+    try {
+        myArticle = await Article.findById(id);
+        res.json(myArticle);
+    } catch (error) {
+        console.log('error ' + error)
+        return res.send('error');
+    }
+    // res.send("article ID : "+id);
+})
+// delete By Id
+app.delete('/articles/:articleId' , async (req , res)=>{
+    const id = req.params.articleId
+    let  notification = {
+        "message" : "success",
+        "status" : 200,
+        "data" : {},
+    }
+
+    try {
+        let result = await Article.findByIdAndDelete(id);
+            notification.data = result;
+        if (result) {
+            notification.message = "deleted";
+        } else {
+            notification.message = "error";
+        }
+        res.json(notification);
+            
+    } catch (error) {
+        console.log('error ' + error)
+        return res.send('error');
+    }
+    // res.send("article ID : "+id);
+})
+
+
+// all articles html
+app.get('/allarticles', async (req, res) => {
+    let allArticles = await Article.find();
+    res.render('articles.ejs', {
+        allArticles : allArticles
+    })
+})
+
+app.post('/article/update/:articleId', async (req, res) => {
+     const id = req.params.articleId
+     const new_title = req.body.new_title
+     const new_body = req.body.new_body
+    let  myArticle =  "";
+    try {
+        myArticle = await Article.findById(id);
+        myArticle.title = new_title;
+        myArticle.body = new_body;
+        myArticle.save();
+        
+        res.json(myArticle);
+    } catch (error) {
+        console.log('error ' + error)
+        return res.send('error');
+    }
     // res.send("article ID : "+id);
 })
 

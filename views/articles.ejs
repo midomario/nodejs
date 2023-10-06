@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>All Articles</title>
+</head>
+<body>
+    <div class="p-10 bg-dark">
+
+    <h1 class="text-3xl font-bold underline">
+        All Articles
+    </h1>
+    <% if(allArticles.length > 0) {%>
+    <ul class="text-xl text-center ">
+        <% for( let article of allArticles) { %>
+        <li> <%=  article.title %> (ID : <%= article.id %> ) <button class="bg-grey p-2 br-5">DELETE</button></li>
+        <% } %>
+    </ul>
+    <% } %>
+
+    </div>
+</body>
+</html>
