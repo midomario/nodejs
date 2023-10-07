@@ -1,0 +1,12 @@
+.all{
+    margin: 100px ;
+    padding: 30px;
+}
+
+.Books{
+    display: flex;
+}
+
+.Book {
+    flex: 1;
+}
