@@ -31,6 +31,19 @@ app.get('/books', (req , res )=> {
 })
 
 
+app.get('/books/:id', (req , res )=> {
+    const myQuery = "SELECT * FROM books WHERE id = ?";
+    const bookId  = req.params.id
+
+    db.query(myQuery, [bookId], function (err, data) {
+        console.log("data : "+JSON.stringify(data))
+        if (err)  return res.json(err)
+        return res.json(data)
+    }) 
+    // console.log(db)
+})
+
+
 
 app.post('/books', (req, res) => {
     const myQuery = "INSERT INTO books (`title` , `desc` , `cover`) VALUES (?)" 
@@ -44,6 +57,35 @@ app.post('/books', (req, res) => {
         if (error) return res.json(error)
         return res.json(result)
     })
+})
+
+
+app.delete('/books/:id', (req, res) => {
+    const bookId = req.params.id
+    const myQuery = "DELETE FROM books WHERE id = ?" 
+     db.query(myQuery,[bookId] ,function (error, result){
+        if (error) return res.json(error)
+        return res.json(result)
+    })
+
+})
+
+
+
+app.put('/books/:id', (req, res) => {
+    const bookId  = req.params.id
+    const myQuery = "UPDATE books SET `title` = ? , `desc`  = ? , `cover` = ? WHERE id = ? " 
+    const values  =  [
+        req.body.title,
+        req.body.desc,
+        req.body.cover
+    ]
+        
+     db.query(myQuery,[...values , bookId] ,function (error, result){
+        if (error) return res.json(error)
+        return res.json(result)
+    })
+
 })
 
 app.listen(8800, () => {

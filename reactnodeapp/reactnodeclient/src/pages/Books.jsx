@@ -19,6 +19,18 @@ const Books = () => {
     fetchAllBooks();
   }, []);// const Books
 
+
+  const deleteHandler = async (id) => {
+       try {
+        const result = await axios.delete('http://localhost:8800/books/'+id)
+         console.log(result)
+         window.location.reload()
+      } catch (error) {
+        console.log('error : ' + error)
+      }
+  }
+
+
   return (
     <div className='all'>
       <h1>All books</h1>
@@ -28,14 +40,18 @@ const Books = () => {
                   {book.cover && <img src={book.cover} alt={book.title} />}
                   <h3 className="underline">{  book.title }</h3>
             <p>{book.desc}</p>
+             <button className='btn'>
+               <Link to={`/update/${book.id}`}>EDIT</Link>
+            </button>
+            <button onClick={()=>deleteHandler(book.id)} className='btn'>
+              DELETE
+            </button>
           </div>
           ))
         }
-
        
       </div>
-
-       <button>
+       <button className='add'>
           <Link to="/add">Add new BOOK</Link>
         </button>
     </div>
